@@ -23,9 +23,15 @@ public class WebConfig {
 		Map<String, WebSocketHandler> map = new HashMap<>();
 		map.put("/test", new MyWebSocketHandler());
 		
+		
+		/**
+		 * SimpleUrlHandlerMapping.class
+		 * 
+		 * 요청 URL 과 비교해 매칭되는 패턴에 대한 handler 를 호출한다.
+		 */
 		SimpleUrlHandlerMapping mapping = new SimpleUrlHandlerMapping();
 		mapping.setUrlMap(map);
-		mapping.setOrder(-1);		// before annotated controllers
+		mapping.setOrder(1);		// before annotated controllers
 		return mapping;
 	}
 	
@@ -40,25 +46,5 @@ public class WebConfig {
 	public WebSocketHandlerAdapter handlerAdapter() {
 		return new WebSocketHandlerAdapter();
 	}
-	
-	
-	/**
-	 * 각 서버의 RequestUpgradeStrategy 는 기본 WebSocket 엔진에서 사용 WebSocket 관련 구성 옵션을 제공한다.
-	 * 아래는 Tomcat 에서 실행될 때 WebScoket 옵션을 설정하는 코드이다.
-	 * (Tomcat 과 Jetty 만 제공)
-	 * 
-	 * @return
-	 */
-	@Bean
-	public WebSocketService webSocketService() {
-		TomcatRequestUpgradeStrategy strategy = new TomcatRequestUpgradeStrategy();
-		strategy.setMaxSessionIdleTimeout(0L);
-	
-		/**
-		 * HandShakeWebSocketService 는 WebSocket 요청에 대한 기본 검사를 수행하고 서버 별로 RequestUpgradeStrategy에 위임한다.
-		 */
-		return new HandshakeWebSocketService(strategy);
-	}
-	
 	
 }
