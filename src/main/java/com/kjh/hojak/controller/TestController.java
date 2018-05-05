@@ -23,8 +23,17 @@ public class TestController {
 	public Flux<String> getStreaming() throws URISyntaxException {
 		WebSocketClient client = new ReactorNettyWebSocketClient();
 		
+		/**
+		 * EmitterProcessor<T>.class
+		 * 동기식 drain loop 와 함께 발행-구독을 구현하는 RingBuffer 기반의 메세지 전달 프로세스
+		 * 
+		 * Flux.map(Function<? super T, ? extends V> mapper)
+		 * 각 함목에 동기 함수를 적용해 해당 시퀀스를 변형한다.
+		 * 
+		 */
 		EmitterProcessor<String> output = EmitterProcessor.create();
 		
+		// subscribe() 를 통해 데이터가 흘러가게 한다. 시퀀스에 대한 Publisher 에게 데이터 생성 시작을 요청한다고 한다.
 		Mono<Void> sessionMono = client.execute(
 				new URI("ws://localhost:8080/test"),
 				session -> session.receive()

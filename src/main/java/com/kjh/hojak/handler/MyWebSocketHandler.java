@@ -17,8 +17,10 @@ public class MyWebSocketHandler implements WebSocketHandler {
 	public Mono<Void> handle(WebSocketSession session) {
 		
 		/**
-		 * Flux.generate(Consumner<SynchroniusSink<T>> generator)
+		 * WebSocketSession.send(Publisher<WebSocketMessage> messages)
+		 * 클라이언트에게 메시지를 전달한다. 매개변수 타입이 Publisher 이기 때문에 Flux, Mono 상관없
 		 * 
+		 * Flux.generate(Consumner<SynchroniusSink<T>> generator)
 		 * consumer 콜백을 통해 신호를 하나씩 생성하여 Flux 를 생성한다.
 		 */
 		return session.send(
